@@ -47,6 +47,6 @@
 		$error = "Les modifications ont bien été enregistrées.";
 	}
 	
-	header("location:../vues/membre.php?erreur=".$error);
+	header("location:../vues/membre.php?message=".$error);
 		
 

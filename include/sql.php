@@ -5,166 +5,175 @@
 						CLASSE DE REQUETES SQL
 	
 	##################################################################### */
+
+	require __DIR__.'/../.env.php';
 	
 	
 	class ClassSQL
 	{
-	
-		// CONNEXION A LA BASE DE DONNEES
+		/**
+		 * CONNEXION A LA BASE DE DONNEES
+		 */
 		function Connect()
 		{
-			$user = 'root';
-			$pass = '';
-			$hote = 'localhost';
-			$port = '8080';
-			$bdd = 'm2l_personnel';
+			$user = BDD_USER;
+			$pass = BDD_PASSWORD;
+			$hote = BDD_HOST;
+			$port = BDD_PORT;
+			$bdd = BDD_NAME;
 			$dsn = "mysql:$hote;port=$port;dbname=$bdd";
 	
-			try
-			{
+			try {
 				$dbh = new PDO($dsn, $user, $pass);
 				$dbh->exec("set character set utf8");
 					
-			}
-			catch (PDOException $e)
-			{
+			} catch (PDOException $e) {
 				die("Erreur! :" . $e->getMessage());
 			}
 	
 			return $dbh;
 		}
+
+
+		/******************
+		 * UTILISATEUR
+		 ******************/
 	
-		// REQUETE DE CONNEXION
-		function GetConnexion($login,$password) {
+
+		/**
+		 * REQUETE DE CONNEXION
+		 * @param login l'identifiant de l'utilisateur
+		 * @param password le mot de passe de l'utilisateur
+		 */
+		function GetConnexion($login, $password) {
 			// CONNEXION A LA BASE DE DONNEES
 			$dbh = $this->Connect();
 				
 			$sql = "SELECT *
-						FROM user
-						WHERE mail='".$login."'
-						AND password='".$password."'";
+					FROM gdl_php_user
+					WHERE mail = '".$login."' AND password = '".$password."'";
 				
 			$query = $dbh->query($sql);
 				
-			if ($query)
-				return $query->fetchAll(PDO::FETCH_ASSOC);
-			else
-				return false;
+			return ($query) ? $query->fetchAll(PDO::FETCH_ASSOC) : false;
 		}
-		
-		// RETOURNE LA LIGUE D'UN ADMIN
-		function GetLigue($id) {
-			// CONNEXION A LA BASE DE DONNEES
-			$dbh = $this->Connect();
-			
-			$sql = "SELECT ligue,ligue.idLigue
-						FROM ligue,user
-						WHERE idUtilisateur='".$id."'
-						AND user.idLigue=ligue.idLigue";
-			
-			$query = $dbh->query($sql);
-			
-			if ($query)
-				return $query->fetchAll(PDO::FETCH_ASSOC);
-			else
-				return false;
-		}
-		
-		// RETOURNE LES MEMEBRES DE LA LIGUE
-		function GetMembres($ligue) {
-			// CONNEXION A LA BASE DE DONNEES
-			$dbh = $this->Connect();
-				
-			$sql = "SELECT nom,prenom,mail,idUtilisateur
-						FROM user
-						WHERE idLigue=".$ligue."
-						AND admin=0";
-				
-			$query = $dbh->query($sql);
-				
-			if ($query)
-				return $query->fetchAll(PDO::FETCH_ASSOC);
-			else
-				return false;
-		}
-		
-		// SUPPRIME USER
-		function SuppUser($id) {
-			// CONNEXION A LA BASE DE DONNEES
-			$dbh = $this->Connect();
-			
-			$sql = "UPDATE user 
-						SET idLigue=NULL
-						WHERE idUtilisateur=".$id;
-			echo $sql;
-			
-			$query = $dbh->query($sql);
-			
-			if ($query)
-				return $query->fetchAll(PDO::FETCH_ASSOC);
-			else
-				return false;
-		}
-		
-		// RETOURNE LES INFORMATIONS USER
+
+
+		/**
+		 * RETOURNE LES INFORMATIONS DE L'UTILISATEUR
+		 * @param id identifiant de l'utilisateur
+		 */
 		function GetInfo($id) {
 			// CONNEXION A LA BASE DE DONNEES
 			$dbh = $this->Connect();
 				
 			$sql = "SELECT *
-						FROM user
-						WHERE idUtilisateur=".$id;
+					FROM gdl_php_user
+					WHERE idUtilisateur = ".$id;
 				
 			$query = $dbh->query($sql);
 				
-			if ($query)
-				return $query->fetchAll(PDO::FETCH_ASSOC);
-			else
-				return false;
+			return ($query) ? $query->fetchAll(PDO::FETCH_ASSOC) : false;
 		}
-		
-		// MODIFICATION INFORMATIONS USER
-		function UpdateInfo($nom,$prenom,$email,$password,$id) {
+
+
+		/**
+		 * MODIFICATION INFORMATIONS DE L'UTILISATEUR
+		 * @param nom le nom de l'utilisateur
+		 * @param prenom le prénom de l'utilisateur
+		 * @param email l'email de l'utilisateur
+		 * @param password le mot de l'utilisateur
+		 * @param id l'identifiant de l'utilisateur
+		 */
+		function UpdateInfo($nom, $prenom, $email, $password, $id) {
 			// CONNEXION A LA BASE DE DONNEES
 			$dbh = $this->Connect();
 			
-			$sql = "UPDATE user
-						SET nom='".$nom."',
-						prenom='".$prenom."',
-						email='".$email."',
-						password=md5(".$password.")
-						WHERE idUtilisateur=".$id;
+			$sql = "UPDATE gdl_php_user
+					SET nom = '".$nom."', prenom = '".$prenom."', email = '".$email."', password = md5(".$password.")
+					WHERE idUtilisateur = ".$id;
 			
 			$query = $dbh->query($sql);
 			
-			if ($query)
-				return $query->fetchAll(PDO::FETCH_ASSOC);
-			else
-				return false;
+			return ($query) ? $query->fetchAll(PDO::FETCH_ASSOC) : false;
 		}
-		
-		// AJOUT D'UN UTILISATEUR
-		function AjouterMembre($nom,$prenom,$email,$ligue) {
+
+
+		/**
+		 * AJOUT D'UN UTILISATEUR
+		 * @param nom le nom de l'utilisateur
+		 * @param prenom le prénom de l'utilisateur
+		 * @param email l'email de l'utilisateur
+		 * @param ligue l'identifiant de la ligue
+		 */
+		function AjouterMembre($nom, $prenom, $email, $ligue) {
 			// CONNEXION A LA BASE DE DONNEES
 			$dbh = $this->Connect();
 				
-			$sql = "INSERT INTO user
-						VALUES('',
-								'".$nom."',
-								'".$prenom."',
-								'".$email."',
-								md5('azerty'),
-								0,
-								'".$ligue."')";
+			$sql = "INSERT INTO `gdl_php_user`(`idUtilisateur`, `nom`, `prenom`, `mail`, `password`, `admin`, `idLigue`) 
+					VALUES (NULL,'".$nom."','".$prenom."','".$email."',md5('azerty'),0,'".$ligue."')";
 				
 			$query = $dbh->query($sql);
 				
-			if ($query)
-				return $query->fetchAll(PDO::FETCH_ASSOC);
-			else
-				return false;
+			return ($query) ? $query->fetchAll(PDO::FETCH_ASSOC) : false;
+		}
+
+
+		/******************
+		 * LIGUE
+		 ******************/
+
+		
+		/**
+		 * RETOURNE LA LIGUE D'UN ADMIN
+		 * @param id l'identifiant de bdd de l'utilisateur
+		 */
+		function GetLigue($id) {
+			// CONNEXION A LA BASE DE DONNEES
+			$dbh = $this->Connect();
+			
+			$sql = "SELECT ligue, gdl_php_ligue.idLigue
+					FROM gdl_php_ligue, gdl_php_user
+					WHERE gdl_php_user.idUtilisateur = '".$id."' AND gdl_php_user.idLigue = gdl_php_ligue.idLigue";
+			
+			$query = $dbh->query($sql);
+			
+			return ($query) ? $query->fetchAll(PDO::FETCH_ASSOC) : false;
 		}
 		
+
+		/**
+		 * RETOURNE LES MEMEBRES DE LA LIGUE
+		 * @param ligne identifiant de la ligue
+		 */
+		function GetMembres($ligue) {
+			// CONNEXION A LA BASE DE DONNEES
+			$dbh = $this->Connect();
+				
+			$sql = "SELECT nom, prenom, mail, idUtilisateur
+					FROM gdl_php_user
+					WHERE idLigue = ".$ligue." AND admin = 0";
+				
+			$query = $dbh->query($sql);
+				
+			return ($query) ? $query->fetchAll(PDO::FETCH_ASSOC) : false;
+		}
+		
+		/**
+		 * SUPPRIME LA LIGUE D'UN UTILISATEUR
+		 * @param id identifiant de l'utilisateur
+		 */
+		function SuppUser($id) {
+			// CONNEXION A LA BASE DE DONNEES
+			$dbh = $this->Connect();
+			
+			$sql = "UPDATE gdl_php_user 
+					SET idLigue = NULL
+					WHERE idUtilisateur = ".$id;
+			
+			$query = $dbh->query($sql);
+			
+			return ($query) ? $query->fetchAll(PDO::FETCH_ASSOC) : false;
+		}
 	}
-	
 ?>

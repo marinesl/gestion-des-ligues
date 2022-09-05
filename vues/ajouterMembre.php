@@ -12,11 +12,18 @@
 <!DOCTYPE html>
 
 <head>
-	<meta charset='utf-8'>
-	<title>Intranet M2L</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gestion des ligues PHP | Admin nouveau membre</title>
 	
 	<!-- BOOTSTRAP -->
-	<link href="../bootstrap/css/bootstrap.css" rel="stylesheet" />
+	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+	<style>
+		.red {
+			color: red;
+		}
+	</style>
 </head>
 
 <body>
@@ -27,16 +34,19 @@
 		<div class="row">
 			<nav class="navbar navbar-default">
 				<div class="navbar-header">
-					<h1 class="navabr-brand">&nbsp;&nbsp;&nbsp;Personnel des ligues de la M2L</h1>
+					<h1 class="navabr-brand">Gestion des ligues</h1>
+				</div>
+				<div class='navbar-body'>
+					<p><a href='../index.php'>Déconnexion</a></p>
 				</div>
 			</nav>
 		</div>
 		
-		<h1>Ajouter un membre</h1>
+		<h2>Ajouter un membre</h2>
 		
 		<?php
-			if(isset($_GET['message']))
-				echo "<p><font color='red'>".$_GET['message']."</font></p>";
+			if (isset($_GET['message']))
+				echo "<p class='red'>".$_GET['message']."</p>";
 		?>
 		
 		<div class="row">
@@ -76,11 +86,11 @@
 		</div>		
 
 	</div>
+
+	<script scr="../bootstrap/js/jquery-3.6.1.js" type="text/javascript"></script>
+	<script scr="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 	
 </body>
-
-<script scr="../bootstrap/js/jquery.js" type="text/javascript"></script>
-<script scr="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
 </html>
 

@@ -1,9 +1,13 @@
 <?php
 
+	/* #####################################################################
+	
+						SCRIPT DE CONNEXION
+	
+	##################################################################### */
+
 	session_start();
 	$_SESSION['id'] = 0;
-
-	// SCRIPT DE CONNEXION
 	
 	// APPEL A LA CLASSE DE REQUETES SQL
 	include 'sql.php';
@@ -21,27 +25,20 @@
 	if ($login != "" && $password != "") {
 		// REQUETS SQL
 		$sql = $sql->GetConnexion($login, md5($password));
-		if (count($sql) == 1) {
-			$success = 1;
-		}
-		else {
-			$success = 2;
-		}
-	}
-	else {
-		$success = 0;
-	}
+
+		$success = (count($sql) == 1) ? 1 : 2;
+	} else $success = 0;
 	
 	if ($success == 0) {
 		$erreur = "Veuillez remplir les champs pour vous connecter.";
 		$location = "../index.php";
 	}
+
 	if ($success == 1) {
 		if ($sql[0]['admin'] == 1) {
 			$location = "../vues/admin.php";
 			$_SESSION['id'] = $sql[0]['idUtilisateur'];
-		}
-		else {
+		} else {
 			$location = "../vues/membre.php";
 			$_SESSION['id'] = $sql[0]['idUtilisateur'];
 		}

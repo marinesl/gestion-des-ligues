@@ -18,7 +18,7 @@
 	// SI LES CHAMPS SONT REMPLIS
 	// ALORS ON AJOUTE A LA BASE DE DONNEES
 	if ($nom != "" && $prenom != "" && $mail != "") {
-		$sql = $sql->AjouterMembre($nom,$prenom,$mail,$ligue);
+		$sql = $sql->AjouterMembre($nom, $prenom, $mail, $ligue);
 		
 		$erreur = "Le membre a bien été ajouté.";
 		$localisation = "../vues/admin.php";
@@ -26,7 +26,7 @@
 	// SINON MESSAGE D'ERREUR
 	else {
 		$erreur = "Veuillez remplir les champs.";
-		//$localisation = "../vues/ajouterMembre.php";
+		$localisation = "../vues/ajouterMembre.php";
 	}
 	
 	header("location:".$localisation."?message=".$erreur);
