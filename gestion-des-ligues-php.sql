@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:8889
--- Généré le : lun. 05 sep. 2022 à 15:44
+-- Généré le : lun. 12 sep. 2022 à 13:59
 -- Version du serveur : 5.7.34
 -- Version de PHP : 7.4.21
 
@@ -40,9 +40,7 @@ INSERT INTO `gdl_php_ligue` (`idLigue`, `ligue`) VALUES
 (1, 'Football'),
 (3, 'VolleyBall'),
 (4, 'Cyclisme'),
-(5, 'Natation'),
-(6, 'Natation synchronisée'),
-(7, 'Tir à l\'arc');
+(5, 'Natation');
 
 -- --------------------------------------------------------
 
@@ -65,7 +63,14 @@ CREATE TABLE `gdl_php_user` (
 --
 
 INSERT INTO `gdl_php_user` (`idUtilisateur`, `nom`, `prenom`, `mail`, `password`, `admin`, `idLigue`) VALUES
-(1, 'RENIER', 'Laurent', 'laurent@mail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 0, 5);
+(1, 'Admin', 'Admin', 'football@mail.com', 'ab4f63f9ac65152575886860dde480a1', 1, 1),
+(2, 'Admin', 'Admin', 'volleyball@mail.com', 'ab4f63f9ac65152575886860dde480a1', 1, 3),
+(3, 'Admin', 'Admin', 'cyclisme@mail.com', 'ab4f63f9ac65152575886860dde480a1', 1, 4),
+(4, 'Admin', 'Admin', 'natation@mail.com', 'ab4f63f9ac65152575886860dde480a1', 1, 5),
+(5, 'Rogers', 'Steve', 'steve.rogers@mail.com', 'ab4f63f9ac65152575886860dde480a1', 0, 1),
+(6, 'Stark', 'Tony', 'tony.stark@mail.com', 'ab4f63f9ac65152575886860dde480a1', 0, 3),
+(7, 'Romanoff', 'Natacha', 'natacha.romanoff@mail.com', 'ab4f63f9ac65152575886860dde480a1', 0, 4),
+(8, 'Barton', 'Clint', 'clint.barton@mail.com', 'ab4f63f9ac65152575886860dde480a1', 0, 5);
 
 --
 -- Index pour les tables déchargées
@@ -92,13 +97,13 @@ ALTER TABLE `gdl_php_user`
 -- AUTO_INCREMENT pour la table `gdl_php_ligue`
 --
 ALTER TABLE `gdl_php_ligue`
-  MODIFY `idLigue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `idLigue` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `gdl_php_user`
 --
 ALTER TABLE `gdl_php_user`
-  MODIFY `idUtilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `idUtilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Contraintes pour les tables déchargées
